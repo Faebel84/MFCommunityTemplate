@@ -1,11 +1,30 @@
 #include "KeypadVA.h"
 #include "allocateMem.h"
 #include "commandmessenger.h"
+#include <Keypad.h>
 
 /* **********************************************************************************
     This is just the basic code to set up your custom device.
     Change/add your code as needed.
 ********************************************************************************** */
+
+
+
+const byte ROWS = 4; //four rows
+const byte COLS = 3; //three columns
+char keys[ROWS][COLS] = {
+  {'1','2','3'},
+  {'4','5','6'},
+  {'7','8','9'},
+  {'*','0','#'}
+};
+//byte rowPins[ROWS] = {5, 4, 3, 2}; //connect to the row pinouts of the keypad
+//byte colPins[COLS] = {8, 7, 6}; //connect to the column pinouts of the keypad
+
+//Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
+//Keypad *keypad = NULL;
+Keypad *ptrkeypad;
+
 
 KeypadVA::KeypadVA(uint8_t Pin1, uint8_t Pin2)
 {
@@ -15,6 +34,11 @@ KeypadVA::KeypadVA(uint8_t Pin1, uint8_t Pin2)
 
 void KeypadVA::begin()
 {
+
+    byte rowPins[ROWS] = {5, 4, 3, 2}; //connect to the row pinouts of the keypad
+    byte colPins[COLS] = {8, 7, 6}; //connect to the column pinouts of the keypad
+    Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS);
+    ptrkeypad = &keypad;
 }
 
 void KeypadVA::attach(uint16_t Pin3, char *init)
@@ -67,5 +91,9 @@ void KeypadVA::set(int16_t messageID, char *setPoint)
 
 void KeypadVA::update()
 {
-    // Do something which is required regulary
+    char key = ptrkeypad->getKey();
+  
+    if (key){
+        Serial.println(key);
+    }
 }
