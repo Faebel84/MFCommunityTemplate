@@ -35,8 +35,10 @@ KeypadVA::KeypadVA(uint8_t Pin1, uint8_t Pin2)
 void KeypadVA::begin()
 {
 
-    byte rowPins[ROWS] = {5, 4, 3, 2}; //connect to the row pinouts of the keypad
-    byte colPins[COLS] = {8, 7, 6}; //connect to the column pinouts of the keypad
+    byte rowPins[ROWS] = {14, 21, 20, 18}; //connect to the row pinouts of the kpd
+    byte colPins[COLS] = {15, 16, 19}; //connect to the column pinouts of the kpd
+    //byte rowPins[ROWS] = {5, 4, 3, 2}; //connect to the row pinouts of the keypad
+    //byte colPins[COLS] = {8, 7, 6}; //connect to the column pinouts of the keypad
     Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS);
     ptrkeypad = &keypad;
 }
@@ -94,6 +96,7 @@ void KeypadVA::update()
     char key = ptrkeypad->getKey();
   
     if (key){
-        Serial.println(key);
+        cmdMessenger.sendCmd(kDebug, F("Button Pressed"));
+        cmdMessenger.sendCmd(kDebug, key);
     }
 }
