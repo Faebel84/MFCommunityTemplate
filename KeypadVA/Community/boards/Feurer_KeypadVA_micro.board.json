@@ -53,7 +53,7 @@
     "MaxShifters": 6,
     "MaxSteppers": 4,
     "MaxInputMultiplexer": 6,
-    "MaxCustomDevices": 0
+    "MaxCustomDevices": 1
   },
   "Pins": [
     {
@@ -167,6 +167,13 @@
       "isPWM": false,
       "Pin": 21,
       "Name": "A3"
+    },
+    {
+      "isAnalog": true,
+      "isI2C": false,
+      "isPWM": false,
+      "Pin": 22,
+      "Name": "VA"
     }
   ]
 }

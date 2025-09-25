@@ -18,12 +18,12 @@ char keys[ROWS][COLS] = {
   {'7','8','9'},
   {'*','0','#'}
 };
-//byte rowPins[ROWS] = {5, 4, 3, 2}; //connect to the row pinouts of the keypad
-//byte colPins[COLS] = {8, 7, 6}; //connect to the column pinouts of the keypad
+byte rowPins[ROWS] = {14, 21, 20, 18}; //connect to the row pinouts of the kpd
+byte colPins[COLS] = {15, 16, 19}; //connect to the column pinouts of the kpd
 
-//Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
+Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
 //Keypad *keypad = NULL;
-Keypad *ptrkeypad;
+//Keypad *ptrkeypad;
 
 
 KeypadVA::KeypadVA(uint8_t Pin1, uint8_t Pin2)
@@ -35,12 +35,12 @@ KeypadVA::KeypadVA(uint8_t Pin1, uint8_t Pin2)
 void KeypadVA::begin()
 {
 
-    byte rowPins[ROWS] = {14, 21, 20, 18}; //connect to the row pinouts of the kpd
-    byte colPins[COLS] = {15, 16, 19}; //connect to the column pinouts of the kpd
+    //byte rowPins[ROWS] = {14, 21, 20, 18}; //connect to the row pinouts of the kpd
+    //byte colPins[COLS] = {15, 16, 19}; //connect to the column pinouts of the kpd
     //byte rowPins[ROWS] = {5, 4, 3, 2}; //connect to the row pinouts of the keypad
     //byte colPins[COLS] = {8, 7, 6}; //connect to the column pinouts of the keypad
-    Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS);
-    ptrkeypad = &keypad;
+    //Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS);
+    //ptrkeypad = &keypad;
 }
 
 void KeypadVA::attach(uint16_t Pin3, char *init)
@@ -93,10 +93,54 @@ void KeypadVA::set(int16_t messageID, char *setPoint)
 
 void KeypadVA::update()
 {
-    char key = ptrkeypad->getKey();
-  
+    //char key = ptrkeypad->getKey();
+    char key = keypad.getKey();
+    int value = 0;
+    String keystring;
+
     if (key){
         cmdMessenger.sendCmd(kDebug, F("Button Pressed"));
         cmdMessenger.sendCmd(kDebug, key);
+        keystring = String(key);
+        if (keystring == "1"){
+            //cmdMessenger.sendCmd(kDebug, F("True"));
+            value = 1;
+        }else if (keystring == "2")
+        {
+            value = 2;
+        }else if (keystring == "3")
+        {
+            value = 3;
+        }else if (keystring == "4")
+        {
+            value = 4;
+        }else if (keystring == "5")
+        {
+            value = 5;
+        }else if (keystring == "6")
+        {
+            value = 6;
+        }else if (keystring == "7")
+        {
+            value = 7;
+        }else if (keystring == "8")
+        {
+            value = 8;
+        }else if (keystring == "9")
+        {
+            value = 9;
+        }else if (keystring == "0")
+        {
+            value = 10;
+        }else if (keystring == "#")
+        {
+            value = 11;
+        }
+        
+        cmdMessenger.sendCmdStart(kAnalogChange);
+        cmdMessenger.sendCmdArg("VA");
+        cmdMessenger.sendCmdArg(value);
+        cmdMessenger.sendCmdEnd();
+        
     }
 }
